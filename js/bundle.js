@@ -1,3 +1,4 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 // //////////////////////////////////////////
 // // Add all Javascript code to this file.
 // /////////////////////////////////////////
@@ -181,3 +182,139 @@ const redditStories =
 // // .then(data => {
 // //     console.log(data.data.children[0]);
 // // })
+},{"./keys":2,"./redditapi":4}],2:[function(require,module,exports){
+module.exports={
+    "newsapi": "280dcf8c9d8841c682dc999e50a7707b",
+    "hackerNews": "75007ceb-094c-44a0-a82f-a42caef144c6",
+    "eventRegistry": "e2c3b284-9e3c-4899-9c4a-91894b232a37"
+  }
+},{}],3:[function(require,module,exports){
+(function (global){
+"use strict";
+
+// ref: https://github.com/tc39/proposal-global
+var getGlobal = function () {
+	// the only reliable means to get the global object is
+	// `Function('return this')()`
+	// However, this causes CSP violations in Chrome apps.
+	if (typeof self !== 'undefined') { return self; }
+	if (typeof window !== 'undefined') { return window; }
+	if (typeof global !== 'undefined') { return global; }
+	throw new Error('unable to locate global object');
+}
+
+var global = getGlobal();
+
+module.exports = exports = global.fetch;
+
+// Needed for TypeScript and Webpack.
+exports.default = global.fetch.bind(global);
+
+exports.Headers = global.Headers;
+exports.Request = global.Request;
+exports.Response = global.Response;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],4:[function(require,module,exports){
+// export const redditStories = newObjArr;
+const fetch = require('node-fetch');
+let searchTerm = 'burger';
+let sortBy = 'relevance';
+
+let searchLimit = 4;
+
+
+fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`)
+    .then(res => res.json())
+    .then(data => {
+        // let objArr = [];
+      let results = (data.data.children.map(data => data.data)); 
+      let newObjArr = [{}, {}, {}, {}];
+      for(i = 0; i < results.length; i++) {
+        newObjArr[i].title = results[i].title.slice(0, 55) + '...';
+        newObjArr[i].thumbnail = results[i].thumbnail;
+        newObjArr[i].category = results[i].subreddit;
+        newObjArr[i].score = results[i].score;
+      }
+      console.log(newObjArr);
+      module.export = newObjArr;
+    })
+    .catch(err => console.log(err));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`)
+//     .then(res => res.json())
+//     .then(data => {
+//         let objArr = [];
+//       let results = (data.data.children.map(data => data.data)); 
+//       console.log(results);
+    //   for(i = 0; i < results.length; i++) {
+    //     let title = results[i].title;
+    //     objArr[i].title = title.slice(0, 55) + '...';
+    //     console.log(objArr);
+    //   }
+    //   let title = results[0].title;
+    //   let thumbnail = results[0].thumbnail;
+    //   let category = results[0].subreddit;
+    //   let score = results[0].score;
+    //   let urlR = 'https://www.reddit.com' + results[0].permalink 
+    //   obj.title = title.slice(0, 55) + '...';
+    //   obj.thumbnail = thumbnail;
+    //   obj.category = category;
+    //   obj.score = score;
+    //   obj.link= urlR;
+    //   console.log(obj);
+    // Test console.logs
+    //   console.log(title);
+    //   console.log(thumbnail);
+    //   console.log(category);
+    //   console.log(score);
+    //   console.log(urlR);
+    // })
+    // .catch(err => console.log(err));
+
+
+    // const newsObject = {
+    //     title: "",
+    //     imagePath: "",
+    //     content: "",
+    //     stat: "",
+    // }
+
+
+
+    
+},{"node-fetch":3}]},{},[1]);
