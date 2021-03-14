@@ -5,7 +5,7 @@
 // browserify app.js -o bundle.js
 // //Modules and API Keys
 
-const fetch = require('node-fetch');
+const fetch = require('node-fetch');:
 const apiKeys = require('./keys');
 const newsApiKey = apiKeys.newsapi;
 const hackerNews = apiKeys.hackerNews;
@@ -171,5 +171,3 @@ sources[1].addEventListener('click', function(){
   })
   .catch(err => alert(`We ran into this error: ${err}`));
   });
-
-
